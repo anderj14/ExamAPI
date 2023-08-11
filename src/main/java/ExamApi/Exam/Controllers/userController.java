@@ -12,6 +12,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin("*")
 public class userController {
 
     @Autowired
@@ -19,7 +20,8 @@ public class userController {
 
     @PostMapping("/")
     public User saveUser(@RequestBody User user) throws Exception{
-        Set<UserRole> roles = new HashSet<>();
+        user.setPerfil("default.png");
+        Set<UserRole> userRoles = new HashSet<>();
 
         Role role = new Role();
         role.setRoleId(2L);
@@ -29,7 +31,9 @@ public class userController {
         userRole.setUser(user);
         userRole.setRole(role);
 
-        return userService.saveUser(user, roles);
+        userRoles.add(userRole);
+
+        return userService.saveUser(user, userRoles);
     }
 
     @GetMapping("/{username}")
